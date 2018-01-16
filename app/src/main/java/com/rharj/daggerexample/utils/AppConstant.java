@@ -6,5 +6,5 @@ package com.rharj.daggerexample.utils;
 
 public class AppConstant {
 
-    public static final String BASE_URL = "";
+    public static final String BASE_URL = "https://dog.ceo/";
 }
