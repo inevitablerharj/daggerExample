@@ -4,12 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rharj.daggerexample.R;
 import com.rharj.daggerexample.activity.MainActivity;
 import com.rharj.daggerexample.model.DaggerExampleModel;
+import com.rharj.daggerexample.model.DaggerResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
 public class DaggerExampleAdapter extends RecyclerView.Adapter<DaggerExampleAdapter.DaggerViewHolder> {
 
     private final Picasso picasso;
-    private List<DaggerExampleModel> resultList = new ArrayList<>();
+    private List<String> resultList = new ArrayList<>();
 
 
     public DaggerExampleAdapter(MainActivity mainActivity, Picasso picasso) {
@@ -38,14 +38,14 @@ public class DaggerExampleAdapter extends RecyclerView.Adapter<DaggerExampleAdap
 
     @Override
     public void onBindViewHolder(DaggerViewHolder holder, int position) {
-        String result = resultList.get(position).toString();
-        holder.tDogName.setText(result);
+        String daggerResult = resultList.get(position);
+        holder.tDogName.setText(daggerResult);
         /*picasso.with(holder.imageView.getContext())
                 .load(result.getPicture().getLarge())
                 .into(holder.imageView);*/
     }
 
-    public void setItems(List<DaggerExampleModel> results) {
+    public void setItems(List<String> results) {
         resultList = results;
         notifyDataSetChanged();
     }

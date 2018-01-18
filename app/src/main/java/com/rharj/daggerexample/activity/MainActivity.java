@@ -1,11 +1,13 @@
 package com.rharj.daggerexample.activity;
 
-import android.app.Service;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +23,8 @@ import com.rharj.daggerexample.component.DaggerExampleComponent;
 import com.rharj.daggerexample.interfaces.ServiceApi;
 import com.rharj.daggerexample.model.DaggerExampleModel;
 import com.rharj.daggerexample.module.ContextModule;
+import com.rharj.daggerexample.utils.AppConstant;
+import com.rharj.daggerexample.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     Retrofit retrofit;
     RecyclerView recycler_list;
+    FrameLayout progress_overlay;
 
     Picasso picasso;
 
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        progress_overlay = findViewById(R.id.progress_overlay);
         recycler_list = findViewById(R.id.recycler_list);
         recycler_list.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -117,25 +123,28 @@ public class MainActivity extends AppCompatActivity {
 
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://randomuser.me/")
+                .baseUrl(AppConstant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
     private void populateUsers() {
+        Utils.animateView(progress_overlay,View.VISIBLE,0.4f,200);
         Call<DaggerExampleModel> randomUsersCall = getService().getAllDogBreeds();
         randomUsersCall.enqueue(new Callback<DaggerExampleModel>() {
             @Override
             public void onResponse(Call<DaggerExampleModel> call, @NonNull Response<DaggerExampleModel> response) {
                 if(response.isSuccessful()) {
                     mAdapter.setItems(response.body().getMessage());
-                    recyclerView.setAdapter(mAdapter);
+                    recycler_list.setAdapter(mAdapter);
+                    Utils.animateView(progress_overlay,View.GONE,0,200);
                 }
             }
 
             @Override
             public void onFailure(Call<DaggerExampleModel> call, Throwable t) {
                 Timber.i(t.getMessage());
+                Utils.animateView(progress_overlay,View.GONE,0,200);
             }
         });
     }

@@ -7,6 +7,9 @@
     android:padding="@dimen/dp16"
     tools:context="com.rharj.daggerexample.activity.MainActivity">
 
+
+    <include layout="@layout/progress_overlay"/>
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

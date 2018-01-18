@@ -11,6 +11,6 @@ import retrofit2.http.GET;
 
 public interface ServiceApi {
 
-    @GET("api/breeds/list/all")
+    @GET("api/breeds/list")
     Call<DaggerExampleModel> getAllDogBreeds();
 }
